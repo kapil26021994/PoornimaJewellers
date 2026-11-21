@@ -1,0 +1,567 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html,
+body,
+app-root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  background-color: #171717;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+app-root {
+  display: block;
+}
+
+button,
+a,
+nav,
+header {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes sheetUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up-1 {
+  animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+  opacity: 0;
+}
+
+.animate-slide-up-2 {
+  animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  opacity: 0;
+}
+
+.animate-slide-up-3 {
+  animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  opacity: 0;
+}
+
+.animate-slide-up-4 {
+  animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  opacity: 0;
+}
+
+.animate-slide-up-5 {
+  animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+  opacity: 0;
+}
+
+.animate-slide-up-6 {
+  animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  opacity: 0;
+}
+
+.animate-float-slow {
+  animation: floatSlow 4s ease-in-out infinite;
+}
+
+.native-sheet {
+  animation: sheetUp 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================================
+   DARK THEME (Obsidian Slate & Warm Gold Accents)
+   ============================================================================ */
+html[data-theme="dark"],
+html[data-theme="dark"] body {
+  background-color: #09090b;
+  color-scheme: dark;
+}
+
+html[data-theme="dark"] .bg-neutral-100 {
+  background-color: #09090b;
+}
+
+html[data-theme="dark"] .bg-white {
+  background-color: #18181b;
+}
+
+html[data-theme="dark"] .bg-neutral-50,
+html[data-theme="dark"] .bg-neutral-50\/50 {
+  background-color: #222227;
+}
+
+html[data-theme="dark"] .bg-neutral-900\/95 {
+  background-color: rgba(18, 18, 22, 0.96);
+}
+
+html[data-theme="dark"] .border-neutral-200,
+html[data-theme="dark"] .border-neutral-100,
+html[data-theme="dark"] .border-neutral-300 {
+  border-color: #2e2e36;
+}
+
+html[data-theme="dark"] .divide-neutral-100 > :not(:last-child) {
+  border-color: #27272f;
+}
+
+html[data-theme="dark"] .text-neutral-900,
+html[data-theme="dark"] .text-neutral-950,
+html[data-theme="dark"] .text-neutral-800 {
+  color: #f4f4f5;
+}
+
+html[data-theme="dark"] .text-neutral-700,
+html[data-theme="dark"] .text-neutral-600 {
+  color: #d4d4d8;
+}
+
+html[data-theme="dark"] .text-neutral-500,
+html[data-theme="dark"] .text-neutral-400 {
+  color: #a1a1aa;
+}
+
+html[data-theme="dark"] .text-amber-700,
+html[data-theme="dark"] .text-amber-800,
+html[data-theme="dark"] .text-amber-900 {
+  color: #fbbf24;
+}
+
+html[data-theme="dark"] .bg-amber-50,
+html[data-theme="dark"] .bg-amber-50\/70,
+html[data-theme="dark"] .bg-amber-100 {
+  background-color: rgba(245, 158, 11, 0.14);
+}
+
+html[data-theme="dark"] .border-amber-200,
+html[data-theme="dark"] .border-amber-200\/60,
+html[data-theme="dark"] .border-amber-200\/70 {
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+html[data-theme="dark"] .bg-emerald-50,
+html[data-theme="dark"] .bg-emerald-50\/60,
+html[data-theme="dark"] .bg-emerald-50\/70,
+html[data-theme="dark"] .bg-emerald-100 {
+  background-color: rgba(16, 185, 129, 0.15);
+}
+
+html[data-theme="dark"] .text-emerald-700,
+html[data-theme="dark"] .text-emerald-800,
+html[data-theme="dark"] .text-emerald-900 {
+  color: #6ee7b7;
+}
+
+html[data-theme="dark"] .border-emerald-200,
+html[data-theme="dark"] .border-emerald-200\/60,
+html[data-theme="dark"] .border-emerald-200\/80 {
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+html[data-theme="dark"] .bg-red-50,
+html[data-theme="dark"] .bg-red-50\/50,
+html[data-theme="dark"] .bg-red-100 {
+  background-color: rgba(239, 68, 68, 0.16);
+}
+
+html[data-theme="dark"] .text-red-600,
+html[data-theme="dark"] .text-red-700,
+html[data-theme="dark"] .text-red-900 {
+  color: #fca5a5;
+}
+
+html[data-theme="dark"] .border-red-200,
+html[data-theme="dark"] .border-red-300 {
+  border-color: rgba(248, 113, 113, 0.45);
+}
+
+html[data-theme="dark"] .bg-slate-100 {
+  background-color: #27272a;
+}
+
+html[data-theme="dark"] .text-slate-700 {
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] input:not([type="checkbox"]),
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background-color: #121216;
+  color: #f4f4f5;
+  border-color: #3f3f46;
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+  color: #71717a;
+}
+
+/* ============================================================================
+   GOLD / LUXURY HIGH-CONTRAST THEME (Onyx Black & Radiant 24K Gold)
+   ============================================================================ */
+html[data-theme="gold-luxury"],
+html[data-theme="gold-luxury"] body {
+  background-color: #020202;
+  color-scheme: dark;
+}
+
+html[data-theme="gold-luxury"] .bg-neutral-100 {
+  background-color: #050505;
+}
+
+html[data-theme="gold-luxury"] .bg-white {
+  background-color: #0d0c09;
+}
+
+html[data-theme="gold-luxury"] .bg-neutral-50,
+html[data-theme="gold-luxury"] .bg-neutral-50\/50 {
+  background-color: #16140d;
+}
+
+html[data-theme="gold-luxury"] .bg-neutral-900,
+html[data-theme="gold-luxury"] .bg-neutral-900\/95 {
+  background-color: #000000;
+}
+
+html[data-theme="gold-luxury"] header {
+  background-color: #000000;
+  border-bottom: 2px solid #f59e0b;
+}
+
+html[data-theme="gold-luxury"] nav {
+  background-color: #000000;
+  border-top: 2px solid #f59e0b;
+}
+
+html[data-theme="gold-luxury"] .border-neutral-200,
+html[data-theme="gold-luxury"] .border-neutral-100,
+html[data-theme="gold-luxury"] .border-neutral-300 {
+  border-color: rgba(251, 191, 36, 0.52);
+}
+
+html[data-theme="gold-luxury"] .divide-neutral-100 > :not(:last-child) {
+  border-color: rgba(251, 191, 36, 0.28);
+}
+
+html[data-theme="gold-luxury"] .text-neutral-900,
+html[data-theme="gold-luxury"] .text-neutral-950,
+html[data-theme="gold-luxury"] .text-neutral-800 {
+  color: #ffffff;
+}
+
+html[data-theme="gold-luxury"] .text-neutral-700,
+html[data-theme="gold-luxury"] .text-neutral-600 {
+  color: #fef3c7;
+}
+
+html[data-theme="gold-luxury"] .text-neutral-500,
+html[data-theme="gold-luxury"] .text-neutral-400 {
+  color: #fcd34d;
+}
+
+html[data-theme="gold-luxury"] .text-amber-700,
+html[data-theme="gold-luxury"] .text-amber-800,
+html[data-theme="gold-luxury"] .text-amber-900,
+html[data-theme="gold-luxury"] .text-amber-600 {
+  color: #fde047;
+}
+
+html[data-theme="gold-luxury"] .bg-amber-50,
+html[data-theme="gold-luxury"] .bg-amber-50\/70,
+html[data-theme="gold-luxury"] .bg-amber-100 {
+  background-color: rgba(245, 158, 11, 0.2);
+}
+
+html[data-theme="gold-luxury"] .border-amber-200,
+html[data-theme="gold-luxury"] .border-amber-200\/60,
+html[data-theme="gold-luxury"] .border-amber-200\/70,
+html[data-theme="gold-luxury"] .border-amber-500\/20 {
+  border-color: rgba(251, 191, 36, 0.72);
+}
+
+html[data-theme="gold-luxury"] .bg-emerald-50,
+html[data-theme="gold-luxury"] .bg-emerald-50\/60,
+html[data-theme="gold-luxury"] .bg-emerald-50\/70,
+html[data-theme="gold-luxury"] .bg-emerald-100 {
+  background-color: rgba(16, 185, 129, 0.22);
+}
+
+html[data-theme="gold-luxury"] .text-emerald-700,
+html[data-theme="gold-luxury"] .text-emerald-800,
+html[data-theme="gold-luxury"] .text-emerald-900 {
+  color: #6ee7b7;
+}
+
+html[data-theme="gold-luxury"] .bg-red-50,
+html[data-theme="gold-luxury"] .bg-red-50\/50,
+html[data-theme="gold-luxury"] .bg-red-100 {
+  background-color: rgba(239, 68, 68, 0.24);
+}
+
+html[data-theme="gold-luxury"] .text-red-600,
+html[data-theme="gold-luxury"] .text-red-700,
+html[data-theme="gold-luxury"] .text-red-900 {
+  color: #fecaca;
+}
+
+html[data-theme="gold-luxury"] .border-red-500,
+html[data-theme="gold-luxury"] .border-red-200,
+html[data-theme="gold-luxury"] .border-red-300 {
+  border-color: #f87171;
+}
+
+html[data-theme="gold-luxury"] .bg-slate-100 {
+  background-color: #1f1b10;
+}
+
+html[data-theme="gold-luxury"] .text-slate-700 {
+  color: #fde68a;
+}
+
+html[data-theme="gold-luxury"] input:not([type="checkbox"]),
+html[data-theme="gold-luxury"] select,
+html[data-theme="gold-luxury"] textarea {
+  background-color: #050505;
+  color: #ffffff;
+  border-color: rgba(251, 191, 36, 0.75);
+}
+
+html[data-theme="gold-luxury"] input::placeholder,
+html[data-theme="gold-luxury"] textarea::placeholder {
+  color: #d97706;
+}
+
+/* ============================================================================
+   CONTRAST GUARDS FOR BRIGHT ACCENT BUTTONS & STATIC THEME SWATCHES
+   ============================================================================ */
+html[data-theme="dark"] .bg-amber-500,
+html[data-theme="dark"] .bg-amber-400,
+html[data-theme="dark"] .bg-emerald-500,
+html[data-theme="gold-luxury"] .bg-amber-500,
+html[data-theme="gold-luxury"] .bg-amber-400,
+html[data-theme="gold-luxury"] .bg-emerald-500 {
+  color: #09090b;
+}
+
+html[data-theme="dark"] .bg-amber-500 .text-neutral-950,
+html[data-theme="dark"] .bg-amber-500.text-neutral-950,
+html[data-theme="gold-luxury"] .bg-amber-500 .text-neutral-950,
+html[data-theme="gold-luxury"] .bg-amber-500.text-neutral-950 {
+  color: #09090b;
+}
+
+/* ============================================================================
+   ROYAL BLUE & WHITE THEME (Crisp White Cards & Sapphire Blue Accents)
+   ============================================================================ */
+html[data-theme="blue-white"],
+html[data-theme="blue-white"] body {
+  background-color: #eff6ff;
+  color-scheme: light;
+}
+
+html[data-theme="blue-white"] .bg-neutral-100 {
+  background-color: #eff6ff;
+}
+
+html[data-theme="blue-white"] .bg-white {
+  background-color: #ffffff;
+}
+
+html[data-theme="blue-white"] .bg-neutral-50,
+html[data-theme="blue-white"] .bg-neutral-50\/50 {
+  background-color: #f8fbff;
+}
+
+html[data-theme="blue-white"] .bg-neutral-900,
+html[data-theme="blue-white"] .bg-neutral-900\/95 {
+  background-color: #1e3a8a;
+}
+
+html[data-theme="blue-white"] .bg-neutral-900\/90,
+html[data-theme="blue-white"] .bg-neutral-900\/85,
+html[data-theme="blue-white"] .bg-neutral-900\/80,
+html[data-theme="blue-white"] .bg-neutral-900\/75 {
+  background-color: rgba(30, 58, 138, 0.9);
+}
+
+html[data-theme="blue-white"] .bg-neutral-800 {
+  background-color: #1d4ed8;
+}
+
+html[data-theme="blue-white"] header {
+  background-color: #1e3a8a;
+  border-bottom-color: rgba(147, 197, 253, 0.35);
+}
+
+html[data-theme="blue-white"] nav {
+  background-color: rgba(30, 58, 138, 0.96);
+  border-top-color: rgba(147, 197, 253, 0.35);
+}
+
+html[data-theme="blue-white"] .border-neutral-200,
+html[data-theme="blue-white"] .border-neutral-100 {
+  border-color: #dbeafe;
+}
+
+html[data-theme="blue-white"] .border-neutral-300,
+html[data-theme="blue-white"] .border-neutral-700 {
+  border-color: #93c5fd;
+}
+
+html[data-theme="blue-white"] .divide-neutral-100 > :not(:last-child) {
+  border-color: #dbeafe;
+}
+
+html[data-theme="blue-white"] .bg-amber-500,
+html[data-theme="blue-white"] .bg-amber-600 {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+html[data-theme="blue-white"] .hover\:bg-amber-400:hover,
+html[data-theme="blue-white"] .hover\:bg-amber-700:hover {
+  background-color: #1d4ed8;
+}
+
+html[data-theme="blue-white"] .bg-amber-500 .text-neutral-950,
+html[data-theme="blue-white"] .bg-amber-500.text-neutral-950,
+html[data-theme="blue-white"] .bg-amber-400.text-neutral-950 {
+  color: #ffffff;
+}
+
+html[data-theme="blue-white"] .bg-amber-500\/20,
+html[data-theme="blue-white"] .bg-amber-500\/15 {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+html[data-theme="blue-white"] .bg-amber-50,
+html[data-theme="blue-white"] .bg-amber-50\/70 {
+  background-color: #eff6ff;
+}
+
+html[data-theme="blue-white"] .bg-amber-100 {
+  background-color: #dbeafe;
+}
+
+html[data-theme="blue-white"] .border-amber-500 {
+  border-color: #2563eb;
+}
+
+html[data-theme="blue-white"] .border-amber-200,
+html[data-theme="blue-white"] .border-amber-200\/60,
+html[data-theme="blue-white"] .border-amber-200\/70,
+html[data-theme="blue-white"] .border-amber-500\/20,
+html[data-theme="blue-white"] .border-amber-500\/30,
+html[data-theme="blue-white"] .border-amber-400\/50 {
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+html[data-theme="blue-white"] .text-amber-600,
+html[data-theme="blue-white"] .text-amber-700,
+html[data-theme="blue-white"] .text-amber-800,
+html[data-theme="blue-white"] .text-amber-900 {
+  color: #1d4ed8;
+}
+
+html[data-theme="blue-white"] .text-amber-400,
+html[data-theme="blue-white"] .text-amber-300,
+html[data-theme="blue-white"] .text-amber-200,
+html[data-theme="blue-white"] .text-amber-200\/80 {
+  color: #e0f2fe;
+}
+
+html[data-theme="blue-white"] header .text-neutral-400,
+html[data-theme="blue-white"] nav .text-neutral-400 {
+  color: #bfdbfe;
+}
+
+html[data-theme="blue-white"] .from-amber-600 {
+  --tw-gradient-from: #2563eb;
+}
+
+html[data-theme="blue-white"] .to-amber-400 {
+  --tw-gradient-to: #60a5fa;
+}
+
+html[data-theme="blue-white"] header .text-neutral-950 {
+  color: #ffffff;
+}
+
+/* Keep Tax Invoice printable cleanly on white paper */
+@media print {
+  html,
+  body {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+
+  html[data-theme="dark"],
+  html[data-theme="dark"] body,
+  html[data-theme="gold-luxury"],
+  html[data-theme="gold-luxury"] body,
+  html[data-theme="blue-white"],
+  html[data-theme="blue-white"] body {
+    background-color: #ffffff;
+    color: #111111;
+    color-scheme: light;
+  }
+}

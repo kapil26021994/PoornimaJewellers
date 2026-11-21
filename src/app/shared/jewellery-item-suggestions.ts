@@ -1,0 +1,11 @@
+export const JEWELLERY_ITEM_SUGGESTIONS = [
+  'Payal', 'Pajeb', 'Kadi', 'Aawale', 'Bichiya', 'Chhalla', 'Jhanjar', 'Todi', 'Kada', 'Chudi',
+  'Bangadi', 'Patla', 'Bracelet', 'Anguthi', 'Ring', 'Hathphool', 'Chain', 'Kanthi', 'Haar', 'Mala',
+  'Locket', 'Mangalsutra', 'Tanmaniya', 'Bali', 'Jhumki', 'Tops', 'Karnphool', 'Nath', 'Nathni',
+  'Laung', 'Borla', 'Maang Tika', 'Matha Patti', 'Murki', 'Coin', 'Silver Coin', 'Lucky', 'Gents Kada',
+  'Gents Chain', 'Gents Ring', 'Baby Kada', 'Baby Payal', 'Baby Bichiya', 'Dori Locket', 'Pendant',
+  'Tulsi Mala', 'Rudraksh Mala', 'Rakhi Bracelet', 'Pooja Coin', 'Silver Glass', 'Silver Bowl',
+  'Silver Plate', 'Silver Spoon', 'Silver Diya', 'Silver Kalash', 'Silver Idol', 'Toe Ring', 'Anklet',
+  'Fancy Payal', 'Fancy Bichiya', 'Rajwadi Kadi', 'Traditional Payal', 'Designer Ring', 'Stone Ring',
+  'Cz Ring'
+] as const;

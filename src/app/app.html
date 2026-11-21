@@ -1,0 +1,151 @@
+<div class="fixed inset-0 w-full overflow-hidden bg-neutral-100 text-neutral-900 font-sans antialiased flex flex-col selection:bg-amber-500 selection:text-neutral-950">
+  <!-- Toast Notifications & Root Install Sheet -->
+  <app-toast></app-toast>
+  <app-pwa-install-sheet></app-pwa-install-sheet>
+
+  <!-- Fixed Header Bar (includes desktop-only top tabs) -->
+  <div class="shrink-0 z-30 w-full">
+    <app-header [activeSection]="currentSection()" (sectionChange)="onDesktopSectionChange($event)"></app-header>
+  </div>
+
+  @if (!pwa.isOnline()) {
+    <div class="bg-amber-500 text-neutral-950 text-[11px] font-bold px-3 py-1 flex items-center justify-center space-x-1.5 shrink-0 w-full">
+      <span class="material-icons text-xs">cloud_off</span>
+      <span>Offline Mode — Working from cached device storage</span>
+    </div>
+  }
+
+  <!-- Scrollable Middle Content -->
+  <main class="flex-1 min-h-0 overflow-y-auto overscroll-y-contain w-full">
+    <div class="max-w-4xl lg:max-w-7xl w-full mx-auto px-3.5 lg:px-6 py-3.5 lg:py-5 pb-6 lg:pb-8">
+    @if (subView() === 'landing') {
+      <app-landing (navigateToSection)="onDesktopSectionChange($event)"></app-landing>
+    } @else if (subView() === 'catalog') {
+      @defer (on immediate) {
+        <app-catalog (goBack)="subView.set(null)"></app-catalog>
+      } @placeholder {
+        <div class="rounded-xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">Loading Product Catalog...</div>
+      } @error {
+        <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+          <p class="text-sm font-semibold text-neutral-900">Unable to load Product Catalog. Please reload to refresh app assets.</p>
+          <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
+        </div>
+      }
+    } @else if (subView() === 'purchases') {
+      @defer (on immediate) {
+        <app-purchases></app-purchases>
+      } @placeholder {
+        <div class="rounded-xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">Loading Purchases...</div>
+      } @error {
+        <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+          <p class="text-sm font-semibold text-neutral-900">Unable to load Purchases. Please reload to refresh app assets.</p>
+          <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
+        </div>
+      }
+    } @else if (subView() === 'suppliers') {
+      @defer (on immediate) {
+        <app-suppliers></app-suppliers>
+      } @placeholder {
+        <div class="rounded-xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">Loading Suppliers...</div>
+      } @error {
+        <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+          <p class="text-sm font-semibold text-neutral-900">Unable to load Suppliers. Please reload to refresh app assets.</p>
+          <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
+        </div>
+      }
+    } @else if (subView() === 'expenses') {
+      @defer (on immediate) {
+        <app-expenses></app-expenses>
+      } @placeholder {
+        <div class="rounded-xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">Loading Expenses...</div>
+      } @error {
+        <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+          <p class="text-sm font-semibold text-neutral-900">Unable to load Expenses. Please reload to refresh app assets.</p>
+          <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
+        </div>
+      }
+    } @else if (subView() === 'reports') {
+      @defer (on immediate) {
+        <app-reports></app-reports>
+      } @placeholder {
+        <div class="rounded-xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">Loading Reports...</div>
+      } @error {
+        <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+          <p class="text-sm font-semibold text-neutral-900">Unable to load Reports. Please reload to refresh app assets.</p>
+          <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
+        </div>
+      }
+    } @else if (subView() === 'settings') {
+      @defer (on immediate) {
+        <app-settings></app-settings>
+      } @placeholder {
+        <div class="rounded-xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">Loading Settings...</div>
+      } @error {
+        <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+          <p class="text-sm font-semibold text-neutral-900">Unable to load Settings. Please reload to refresh app assets.</p>
+          <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
+        </div>
+      }
+    } @else {
+      @switch (activeTab()) {
+        @case ('dashboard') {
+          <app-dashboard (tabNavigate)="onTabChange($any($event))" (openSubView)="onSubViewChange($event)"></app-dashboard>
+        }
+        @case ('inventory') {
+          @defer (on immediate) {
+            <app-inventory></app-inventory>
+          } @placeholder {
+            <div class="rounded-xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">Loading Inventory...</div>
+          } @error {
+            <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+              <p class="text-sm font-semibold text-neutral-900">Unable to load Inventory. Please reload to refresh app assets.</p>
+              <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
+            </div>
+          }
+        }
+        @case ('sales') {
+          @defer (on immediate) {
+            <app-sales></app-sales>
+          } @placeholder {
+            <div class="rounded-xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">Loading Sales...</div>
+          } @error {
+            <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+              <p class="text-sm font-semibold text-neutral-900">Unable to load Sales. Please reload to refresh app assets.</p>
+              <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
+            </div>
+          }
+        }
+        @case ('customers') {
+          @defer (on immediate) {
+            <app-customers></app-customers>
+          } @placeholder {
+            <div class="rounded-xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">Loading Customers...</div>
+          } @error {
+            <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+              <p class="text-sm font-semibold text-neutral-900">Unable to load Customers. Please reload to refresh app assets.</p>
+              <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
+            </div>
+          }
+        }
+        @case ('more') {
+          @defer (on immediate) {
+            <app-more (selectSubView)="onSubViewChange($event)"></app-more>
+          } @placeholder {
+            <div class="rounded-xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">Loading Menu...</div>
+          } @error {
+            <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+              <p class="text-sm font-semibold text-neutral-900">Unable to load Menu. Please reload to refresh app assets.</p>
+              <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
+            </div>
+          }
+        }
+      }
+    }
+    </div>
+  </main>
+
+  <!-- Pinned Bottom Navigation Bar (Mobile/Tablet only; Desktop uses top tabs) -->
+  <div class="shrink-0 z-40 w-full lg:hidden">
+    <app-bottom-nav [activeTab]="activeTab()" (tabChange)="onTabChange($event)"></app-bottom-nav>
+  </div>
+</div>
