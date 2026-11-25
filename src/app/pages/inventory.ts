@@ -41,23 +41,21 @@ import { Product } from '../models/jewellery.model';
       <!-- Search, Scan & Select Bar -->
       <div class="bg-white p-3 rounded-3xl shadow-sm border border-neutral-200">
         <div class="flex items-center space-x-1.5">
-          <div class="relative flex-1 min-w-0">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-neutral-400">
-              <span class="material-icons text-sm">search</span>
-            </span>
-            <input type="text" [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)" 
-              placeholder="Search name, code..." 
-              class="w-full pl-9 pr-7 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs focus:border-amber-500 focus:bg-white focus:ring-2 focus:ring-amber-500/20 outline-none transition">
+          <div class="flex flex-1 min-w-0 items-center gap-2 rounded-xl bg-neutral-50 border border-neutral-200 px-3 focus-within:border-amber-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-amber-500/20 transition">
+            <span class="material-icons text-base leading-none text-neutral-400 shrink-0 pointer-events-none">search</span>
+            <input type="text" [value]="searchQuery()" (input)="searchQuery.set($any($event.target).value)"
+              placeholder="Search name, code..."
+              class="flex-1 min-w-0 py-2 bg-transparent border-0 text-xs outline-none focus:ring-0">
             @if (searchQuery()) {
               <button (click)="searchQuery.set('')" type="button"
-                class="absolute inset-y-0 right-0 flex items-center pr-2 text-neutral-400 hover:text-neutral-700 cursor-pointer" title="Clear Search">
-                <span class="material-icons text-sm">close</span>
+                class="text-neutral-400 hover:text-neutral-700 cursor-pointer shrink-0" title="Clear Search">
+                <span class="material-icons text-sm leading-none">close</span>
               </button>
             }
           </div>
 
           <button (click)="openScanner()" type="button"
-            class="px-2.5 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-amber-300 border border-amber-500/30 text-xs font-bold flex items-center space-x-1 transition cursor-pointer active:scale-95 shrink-0 shadow-xs"
+            class="lg:hidden px-2.5 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-amber-300 border border-amber-500/30 text-xs font-bold flex items-center space-x-1 transition cursor-pointer active:scale-95 shrink-0 shadow-xs"
             title="Scan Tag QR / Barcode">
             <span class="material-icons text-base text-amber-400">qr_code_scanner</span>
             <span>Scan</span>
@@ -65,15 +63,15 @@ import { Product } from '../models/jewellery.model';
 
           <button (click)="toggleSelectionMode()" type="button"
             [class]="selectionMode() ? 'bg-amber-500 text-neutral-950 border-amber-500' : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border-neutral-200'"
-            class="px-2.5 py-2 rounded-xl border text-xs font-bold flex items-center space-x-1 transition cursor-pointer active:scale-95 shrink-0"
+            class="lg:hidden px-2.5 py-2 rounded-xl border text-xs font-bold flex items-center space-x-1 transition cursor-pointer active:scale-95 shrink-0"
             title="Bulk Select Items">
             <span class="material-icons text-base">checklist</span>
             <span>{{ selectionMode() ? 'Done' : 'Select' }}</span>
           </button>
 
           <button (click)="openAddModal()" type="button"
-            class="hidden lg:inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 text-xs font-bold shadow-xs transition cursor-pointer shrink-0">
-            <span class="material-icons text-base">add</span>
+            class="hidden lg:inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-[11px] font-bold shadow-xs transition cursor-pointer shrink-0">
+            <span class="material-icons text-sm">add</span>
             <span>Add Product</span>
           </button>
         </div>
@@ -464,9 +462,9 @@ import { Product } from '../models/jewellery.model';
       } @else {
         <div class="fixed bottom-[calc(3.75rem+env(safe-area-inset-bottom))] right-6 z-30 lg:hidden">
           <button (click)="openAddModal()" 
-            class="bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-5 py-3.5 rounded-3xl shadow-xl shadow-amber-500/30 flex items-center space-x-2 transition hover:scale-105 active:scale-95 cursor-pointer border border-amber-400/50" type="button">
-            <span class="material-icons text-xl">add</span>
-            <span class="text-xs font-bold tracking-wide pr-1">Add Product</span>
+            class="bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-3.5 py-2.5 rounded-2xl shadow-xl shadow-amber-500/30 flex items-center space-x-1.5 transition hover:scale-105 active:scale-95 cursor-pointer border border-amber-400/50" type="button">
+            <span class="material-icons text-lg">add</span>
+            <span class="text-[11px] font-bold tracking-wide">Add Product</span>
           </button>
         </div>
       }

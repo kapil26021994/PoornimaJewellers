@@ -3,6 +3,17 @@
   <app-toast></app-toast>
   <app-pwa-install-sheet></app-pwa-install-sheet>
 
+  <!-- Global Quick Action Modals -->
+  @if (service.isQuickSaleModalOpen()) {
+    <app-sale-modal (dismiss)="service.isQuickSaleModalOpen.set(false)"></app-sale-modal>
+  }
+  @if (service.isQuickPurchaseModalOpen()) {
+    <app-purchase-modal (dismiss)="service.isQuickPurchaseModalOpen.set(false)"></app-purchase-modal>
+  }
+  @if (service.isQuickExpenseModalOpen()) {
+    <app-expense-modal (dismiss)="service.isQuickExpenseModalOpen.set(false)"></app-expense-modal>
+  }
+
   <!-- Fixed Header Bar (includes desktop-only top tabs) -->
   <div class="shrink-0 z-30 w-full">
     <app-header [activeSection]="currentSection()" (sectionChange)="onDesktopSectionChange($event)"></app-header>
@@ -17,10 +28,8 @@
 
   <!-- Scrollable Middle Content -->
   <main class="flex-1 min-h-0 overflow-y-auto overscroll-y-contain w-full">
-    <div class="max-w-4xl lg:max-w-7xl w-full mx-auto px-3.5 lg:px-6 py-3.5 lg:py-5 pb-6 lg:pb-8">
-    @if (subView() === 'landing') {
-      <app-landing (navigateToSection)="onDesktopSectionChange($event)"></app-landing>
-    } @else if (subView() === 'catalog') {
+    <div class="max-w-4xl lg:max-w-7xl w-full mx-auto px-3 lg:py-2 pb-2 lg:pb-8">
+    @if (subView() === 'catalog') {
       @defer (on immediate) {
         <app-catalog (goBack)="subView.set(null)"></app-catalog>
       } @placeholder {
@@ -28,6 +37,17 @@
       } @error {
         <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
           <p class="text-sm font-semibold text-neutral-900">Unable to load Product Catalog. Please reload to refresh app assets.</p>
+          <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
+        </div>
+      }
+    } @else if (subView() === 'girwa') {
+      @defer (on immediate) {
+        <app-girwa></app-girwa>
+      } @placeholder {
+        <div class="rounded-xl border border-neutral-200 bg-white p-8 text-center text-sm text-neutral-500">Loading Girwa Ledger...</div>
+      } @error {
+        <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-center space-y-3">
+          <p class="text-sm font-semibold text-neutral-900">Unable to load Girwa Ledger. Please reload to refresh app assets.</p>
           <button type="button" (click)="reloadApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-xs font-semibold">Reload App</button>
         </div>
       }

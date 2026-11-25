@@ -1,5 +1,5 @@
 export type CategoryType = 'Gold' | 'Silver' | 'Diamond' | 'Artificial';
-export type MetalType = '22K Gold' | '18K Gold' | '14K Gold' | '925 Silver' | 'Platinum' | 'Brass/Alloy';
+export type MetalType = '24K Gold' | '22K Gold' | '18K Gold' | '14K Gold' | '925 Silver' | 'Pure Silver' | 'Platinum' | 'Brass/Alloy';
 export type AppTheme = 'light' | 'dark' | 'gold-luxury' | 'blue-white';
 
 export interface Product {
@@ -33,7 +33,10 @@ export interface SaleItem {
   grossWeight: number;
   netWeight: number;
   weight: number;
+  purity?: string;
+  jewelleryRate?: number;
   unitPrice: number;
+  makingCharges?: number;
   discount: number;
   total: number;
 }
@@ -132,3 +135,48 @@ export interface ShopSettings {
   defaultLowStockThreshold: number;
   theme: AppTheme;
 }
+
+export type GirwaStatus = 'Active' | 'Released' | 'Defaulted';
+
+export interface GirwaItem {
+  itemName: string;
+  metalType: MetalType;
+  purity: string;
+  grossWeight: number; // in grams
+  netWeight: number; // in grams
+  itemDescription?: string;
+  valuationAmount: number; // Estimated gold/silver value
+}
+
+export interface GirwaInterestPayment {
+  id: string;
+  date: string;
+  amount: number;
+  monthsCovered: number;
+  paymentMode: 'Cash' | 'UPI' | 'Bank Transfer';
+  receiptNo: string;
+  notes?: string;
+}
+
+export interface GirwaRecord {
+  id: string;
+  girwaNo: string; // e.g. "GRV-2026-001"
+  customerName: string;
+  customerPhone: string;
+  customerAddress?: string;
+  customerAadhaar?: string;
+  items: GirwaItem[];
+  totalGrossWeight: number;
+  totalNetWeight: number;
+  totalValuation: number;
+  loanAmount: number; // Principal ₹ given to customer
+  interestRateMonthly: number; // e.g. 1.5% or 2.0% per month
+  startDate: string; // YYYY-MM-DD
+  dueDate?: string; // YYYY-MM-DD
+  closedDate?: string;
+  status: GirwaStatus; // 'Active' | 'Released' | 'Defaulted'
+  interestPayments: GirwaInterestPayment[];
+  storageLockerNo?: string; // Locker / Box # where jewellery is stored safely
+  notes?: string;
+}
+

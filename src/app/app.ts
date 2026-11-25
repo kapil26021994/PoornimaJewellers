@@ -16,7 +16,11 @@ import { Expenses } from './pages/expenses';
 import { Reports } from './pages/reports';
 import { Settings } from './pages/settings';
 import { ProductCatalog } from './pages/catalog';
-import { Landing } from './pages/landing';
+import { Girwa } from './pages/girwa';
+import { SaleModal } from './pages/sale-modal';
+import { PurchaseModal } from './pages/purchase-modal';
+import { ExpenseModal } from './pages/expense-modal';
+import { JewelleryService } from './services/jewellery.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,15 +43,19 @@ import { Landing } from './pages/landing';
     Reports,
     Settings,
     ProductCatalog,
-    Landing
+    Girwa,
+    SaleModal,
+    PurchaseModal,
+    ExpenseModal
   ],
   templateUrl: './app.html'
 })
 export class App {
   private readonly platformId = inject(PLATFORM_ID);
   readonly pwa = inject(PwaService);
+  readonly service = inject(JewelleryService);
   activeTab = signal<TabType>('dashboard');
-  subView = signal<string | null>('landing');
+  subView = signal<string | null>(null);
 
   readonly currentSection = computed(() => this.subView() ?? this.activeTab());
 

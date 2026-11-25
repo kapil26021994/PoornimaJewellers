@@ -14,35 +14,37 @@ import { Product } from '../models/jewellery.model';
   template: `
     <div class="space-y-4 lg:space-y-6 pb-12 animate-fade-in-scale">
       <!-- Welcome Banner & Quick Showroom Action Bar -->
-      <div class="bg-gradient-to-r from-neutral-900 via-neutral-950 to-neutral-900 text-white rounded-3xl p-5 lg:p-6 shadow-xl border border-amber-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4 relative overflow-hidden">
+      <div class="w-full max-w-[500px] mx-auto bg-gradient-to-r from-neutral-900 via-neutral-950 to-neutral-900 text-white rounded-xl p-2 shadow-lg border border-amber-500/30 relative overflow-hidden">
         <div class="absolute -right-16 -top-16 w-48 h-48 bg-amber-500/10 rounded-full blur-2xl pointer-events-none animate-float-slow"></div>
-        <div class="space-y-1 relative z-10">
-          <div class="inline-flex items-center space-x-2 px-3 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30 uppercase tracking-wider">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Live Showroom ERP Active</span>
-          </div>
-          <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
-            {{ service.settings().shopName }}
-          </h2>
-          <p class="text-xs text-neutral-300">
-            Welcome back, <strong class="text-amber-300">{{ service.settings().ownerName }}</strong> • Today's bullion rates and sales overview are live.
-          </p>
-        </div>
-
-        <div class="flex items-center space-x-2.5 shrink-0 flex-wrap gap-y-2 relative z-10">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 relative z-10">
           <button
             type="button"
-            (click)="openLandingPage()"
-            class="px-4 py-2.5 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-amber-300 text-xs font-extrabold flex items-center space-x-1.5 transition transform hover:-translate-y-0.5 active:scale-95 cursor-pointer shadow-sm">
-            <span class="material-icons text-base text-amber-400">play_circle</span>
-            <span>Showroom & Tutorial</span>
+            (click)="openSubView.emit('girwa')"
+            class="min-h-9 px-1.5 py-1.5 rounded-lg bg-amber-400/20 hover:bg-amber-400/30 border border-amber-400/50 text-amber-100 text-[11px] font-bold flex items-center justify-center gap-1 transition active:scale-95 cursor-pointer shadow-sm">
+            <span class="material-icons text-sm text-amber-400">account_balance_wallet</span>
+            <span>Girwa (गिरवी)</span>
+          </button>
+
+          <button
+            type="button"
+            (click)="navigateTo('inventory')"
+            class="min-h-9 px-1.5 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-amber-200 text-[11px] font-bold flex items-center justify-center gap-1 transition active:scale-95 cursor-pointer shadow-sm">
+            <span class="material-icons text-sm text-amber-400">inventory_2</span>
+            <span>Add Inventory</span>
+          </button>
+          <button
+            type="button"
+            (click)="navigateTo('customers')"
+            class="min-h-9 px-1.5 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-amber-200 text-[11px] font-bold flex items-center justify-center gap-1 transition active:scale-95 cursor-pointer shadow-sm">
+            <span class="material-icons text-sm text-amber-400">person_add</span>
+            <span>Add Customer</span>
           </button>
           <button
             type="button"
             (click)="navigateTo('sales')"
-            class="px-4 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-neutral-950 text-xs font-black flex items-center space-x-1.5 transition transform hover:-translate-y-0.5 active:scale-95 cursor-pointer shadow-lg shadow-amber-500/25">
-            <span class="material-icons text-base">point_of_sale</span>
-            <span>New Tax Bill (POS)</span>
+            class="min-h-9 px-1.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-neutral-950 text-[11px] font-black flex items-center justify-center gap-1 transition active:scale-95 cursor-pointer shadow-md shadow-amber-500/20">
+            <span class="material-icons text-sm">receipt_long</span>
+            <span>Add Invoice</span>
           </button>
         </div>
       </div>
@@ -500,9 +502,5 @@ export class Dashboard {
 
   openCatalog() {
     this.openSubView.emit('catalog');
-  }
-
-  openLandingPage() {
-    this.openSubView.emit('landing');
   }
 }

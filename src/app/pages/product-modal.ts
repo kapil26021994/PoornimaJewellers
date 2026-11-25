@@ -23,13 +23,13 @@ interface MarketingDesignOption {
   imports: [CommonModule, ReactiveFormsModule],
   template: `
     <div class="fixed inset-0 h-[100dvh] z-[100] bg-black/65 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-hidden">
-      <div class="bg-white rounded-none sm:rounded-sm shadow-2xl max-w-5xl lg:max-w-6xl w-full max-h-[96vh] flex flex-col overflow-hidden border border-amber-500/20 native-sheet">
+      <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-w-5xl lg:max-w-6xl w-full max-h-[92dvh] sm:max-h-[90dvh] flex flex-col overflow-hidden border border-amber-500/20 native-sheet">
         <!-- Fixed Modal Header -->
-        <div class="bg-neutral-900 text-white px-4 pt-2 pb-2.5 sm:px-4 sm:py-2.5 border-b border-amber-500/20 shrink-0">
-          <div class="w-10 h-1 bg-neutral-700 rounded-none mx-auto mb-2 sm:hidden"></div>
+        <div class="bg-neutral-900 text-white px-4 pt-2.5 pb-3 sm:px-5 sm:py-3 border-b border-amber-500/20 shrink-0">
+          <div class="w-10 h-1 bg-neutral-700 rounded-full mx-auto mb-2.5 sm:hidden"></div>
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2.5">
-              <div class="w-8 h-8 rounded bg-amber-500 text-neutral-950 flex items-center justify-center font-bold">
+              <div class="w-8 h-8 rounded-lg bg-amber-500 text-neutral-950 flex items-center justify-center font-bold">
                 <span class="material-icons text-lg">inventory_2</span>
               </div>
               <div>
@@ -37,7 +37,7 @@ interface MarketingDesignOption {
                 <p class="text-[11px] text-neutral-400">Enter precise weight, purity and valuation details</p>
               </div>
             </div>
-            <button (click)="dismiss.emit()" class="w-7 h-7 rounded bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center text-neutral-300 transition cursor-pointer" type="button">
+            <button (click)="dismiss.emit()" class="w-7 h-7 rounded-full bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center text-neutral-300 transition cursor-pointer" type="button">
               <span class="material-icons text-sm">close</span>
             </button>
           </div>
@@ -45,27 +45,35 @@ interface MarketingDesignOption {
 
         <!-- Form Layout: Scrollable Middle Fields + Fixed Modal Footer -->
         <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="flex-1 min-h-0 flex flex-col overflow-hidden">
-          <div class="flex-1 min-h-0 overflow-y-auto overscroll-y-contain p-3 sm:p-4 space-y-3">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <div class="flex-1 min-h-0 overflow-y-auto overscroll-y-contain p-4 sm:p-6 space-y-4 sm:space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
             <!-- Select Item / Product Name with Custom Dropdown -->
             <div class="sm:col-span-1 lg:col-span-1 relative">
-              <label class="block text-xs font-bold text-neutral-800 capitalize tracking-wider mb-1">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1">
                 Select Item Name *
                 <div class="relative">
-                  <input type="text" formControlName="name" (focus)="onItemNameFocus()" (input)="onItemNameInput($event)" placeholder="Select or type item..."
-                    class="w-full mt-1 px-3.5 py-2.5 rounded-none border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-sm text-neutral-900 font-normal bg-white pr-8">
-                  <button type="button" (click)="toggleItemDropdown()" class="absolute inset-y-0 right-0 flex items-center pr-2.5 text-neutral-400 hover:text-neutral-700 cursor-pointer mt-1" tabindex="-1">
-                    <span class="material-icons text-sm">arrow_drop_down</span>
-                  </button>
+                  <input type="text" formControlName="name" (focus)="onItemNameFocus()" (blur)="onItemNameBlur()" (input)="onItemNameInput($event)" placeholder="Select or type item..."
+                    class="w-full mt-1 px-3.5 py-2.5 rounded-xl border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-sm text-neutral-900 font-normal bg-white pr-8">
+                  @if (productForm.get('name')?.value) {
+                    <button type="button" (click)="clearItemName()" class="absolute inset-y-0 right-0 flex items-center pr-2.5 text-neutral-400 hover:text-neutral-700 cursor-pointer mt-1" tabindex="-1" title="Clear">
+                      <span class="material-icons text-sm">close</span>
+                    </button>
+                  } @else {
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-2.5 text-neutral-400 pointer-events-none mt-1">
+                      <span class="material-icons text-sm">search</span>
+                    </span>
+                  }
                 </div>
               </label>
 
-              @if (showItemDropdown() && filteredItemSuggestions().length > 0) {
-                <div class="absolute left-0 right-0 top-full mt-1 z-50 bg-white border border-neutral-300 rounded-none shadow-2xl max-h-52 overflow-y-auto divide-y divide-neutral-100">
+              @if (showItemDropdown() && productForm.get('name')?.value?.trim()) {
+                <div class="absolute left-0 right-0 top-full mt-1 z-50 bg-white border border-neutral-300 rounded-xl shadow-2xl max-h-52 overflow-y-auto divide-y divide-neutral-100">
                   @for (item of filteredItemSuggestions(); track item) {
-                    <button type="button" (click)="selectItemSuggestion(item)" class="w-full px-3.5 py-2 text-left text-xs sm:text-sm text-neutral-800 hover:bg-amber-50 hover:text-amber-900 font-medium transition cursor-pointer">
+                    <button type="button" (mousedown)="selectItemSuggestion(item)" class="w-full px-3.5 py-2 text-left text-xs sm:text-sm text-neutral-800 hover:bg-amber-50 hover:text-amber-900 font-medium transition cursor-pointer">
                       {{ item }}
                     </button>
+                  } @empty {
+                    <div class="px-3.5 py-2 text-xs text-neutral-400 italic">No matching items found. Type custom name.</div>
                   }
                 </div>
               }
@@ -77,18 +85,18 @@ interface MarketingDesignOption {
 
             <!-- Product Code -->
             <div>
-              <label class="block text-xs font-bold text-neutral-800 capitalize tracking-wider mb-1">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1">
                 Product Code (SKU) *
                 <input type="text" formControlName="code" placeholder="e.g. JWL-G-1004"
-                  class="w-full mt-1 px-3.5 py-2 rounded-none border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
+                  class="w-full mt-1 px-3.5 py-2 rounded-xl border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
               </label>
             </div>
 
             <!-- Category -->
             <div>
-              <label class="block text-xs font-bold text-neutral-800 capitalize tracking-wider mb-1">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1">
                 Category *
-                <select formControlName="category" class="w-full mt-1 px-3.5 py-2 rounded-none border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 bg-white font-normal">
+                <select formControlName="category" class="w-full mt-1 px-3.5 py-2 rounded-xl border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 bg-white font-normal">
                   <option value="Gold">Gold</option>
                   <option value="Silver">Silver</option>
                   <option value="Diamond">Diamond</option>
@@ -99,9 +107,9 @@ interface MarketingDesignOption {
 
             <!-- Metal Type -->
             <div>
-              <label class="block text-xs font-bold text-neutral-800 capitalize tracking-wider mb-1">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1">
                 Metal Type *
-                <select formControlName="metalType" class="w-full mt-1 px-3.5 py-2 rounded-none border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 bg-white font-normal">
+                <select formControlName="metalType" class="w-full mt-1 px-3.5 py-2 rounded-xl border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 bg-white font-normal">
                   <option value="22K Gold">22K Gold</option>
                   <option value="18K Gold">18K Gold</option>
                   <option value="14K Gold">14K Gold</option>
@@ -114,64 +122,64 @@ interface MarketingDesignOption {
 
             <!-- Purity -->
             <div>
-              <label class="block text-xs font-bold text-neutral-800 capitalize tracking-wider mb-1">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1">
                 Purity / Hallmarking *
                 <input type="text" formControlName="purity" placeholder="e.g. 916 Hallmarked"
-                  class="w-full mt-1 px-3.5 py-2 rounded-none border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
+                  class="w-full mt-1 px-3.5 py-2 rounded-xl border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
               </label>
             </div>
 
             <!-- Gross Weight -->
             <div>
-              <label class="block text-xs font-bold text-neutral-800 capitalize tracking-wider mb-1">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1">
                 Gross Weight (g) *
                 <input type="number" step="0.1" formControlName="grossWeight" placeholder="0.00"
-                  class="w-full mt-1 px-3.5 py-2 rounded-none border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
+                  class="w-full mt-1 px-3.5 py-2 rounded-xl border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
               </label>
             </div>
 
             <!-- Net Weight -->
             <div>
-              <label class="block text-xs font-bold text-neutral-800 capitalize tracking-wider mb-1">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1">
                 Net Weight (g) *
                 <input type="number" step="0.1" formControlName="netWeight" placeholder="0.00"
-                  class="w-full mt-1 px-3.5 py-2 rounded-none border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
+                  class="w-full mt-1 px-3.5 py-2 rounded-xl border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
               </label>
             </div>
 
             <!-- Jewellery Rate (Jewellery Bhav) -->
             <div>
-              <label class="block text-xs font-bold text-neutral-800 capitalize tracking-wider mb-1">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1">
                 Jewellery Rate (₹/g Bhav) *
                 <input type="number" step="0.5" formControlName="jewelleryRate" placeholder="6650"
-                  class="w-full mt-1 px-3.5 py-2 rounded-none border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
+                  class="w-full mt-1 px-3.5 py-2 rounded-xl border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
               </label>
             </div>
 
             <!-- Making Charges -->
             <div>
-              <label class="block text-xs font-bold text-neutral-800 capitalize tracking-wider mb-1">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1">
                 Making Charges (₹)
                 <input type="number" formControlName="makingCharges" placeholder="0"
-                  class="w-full mt-1 px-3.5 py-2 rounded-none border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
+                  class="w-full mt-1 px-3.5 py-2 rounded-xl border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
               </label>
             </div>
 
             <!-- Selling Price -->
             <div>
-              <label class="block text-xs font-bold text-neutral-800 capitalize tracking-wider mb-1">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1">
                 Selling Price (₹) *
                 <input type="number" formControlName="sellingPrice" placeholder="0"
-                  class="w-full mt-1 px-3.5 py-2 rounded-none border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
+                  class="w-full mt-1 px-3.5 py-2 rounded-xl border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
               </label>
             </div>
 
             <!-- Quantity -->
             <div>
-              <label class="block text-xs font-bold text-neutral-800 capitalize tracking-wider mb-1">
+              <label class="block text-xs font-bold text-neutral-800 uppercase tracking-wider mb-1">
                 Quantity (Pcs) *
                 <input type="number" min="0" formControlName="quantity" placeholder="1"
-                  class="w-full mt-1 px-3.5 py-2 rounded-none border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
+                  class="w-full mt-1 px-3.5 py-2 rounded-xl border border-neutral-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 outline-none text-xs sm:text-sm text-neutral-900 font-normal bg-white">
               </label>
             </div>
 
@@ -379,7 +387,7 @@ interface MarketingDesignOption {
                           [value]="promoTagline()"
                           (input)="onTaglineInput($event)"
                           placeholder="Optional promo text..."
-                          class="w-full sm:w-auto sm:flex-1 px-2.5 py-1 rounded-none border border-neutral-300 bg-neutral-50 text-[11px] text-neutral-900 outline-none focus:border-amber-500">
+                          class="w-full sm:w-auto sm:flex-1 px-2.5 py-1 rounded-md border border-neutral-300 bg-neutral-50 text-[11px] text-neutral-900 outline-none focus:border-amber-500">
                         <button type="button" (click)="generateDesktopMarketingVideo()"
                           class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 px-2.5 sm:px-3 py-1 rounded-md bg-neutral-900 hover:bg-neutral-800 text-amber-300 text-[10px] font-bold transition cursor-pointer shrink-0">
                           <span class="material-icons text-xs">auto_fix_high</span>
@@ -406,7 +414,7 @@ interface MarketingDesignOption {
                       [value]="promoTagline()"
                       (input)="onTaglineInput($event)"
                       placeholder="Optional Promo Text (e.g. Festive Launch • Flat Making)"
-                      class="w-full sm:flex-1 px-3 py-1.5 rounded-none border border-neutral-300 bg-white text-xs text-neutral-900 outline-none focus:border-amber-500">
+                      class="w-full sm:flex-1 px-3 py-1.5 rounded-lg border border-neutral-300 bg-white text-xs text-neutral-900 outline-none focus:border-amber-500">
                     <button type="button" (click)="generateDesktopMarketingVideo()"
                       class="w-full sm:w-auto shrink-0 py-2 sm:py-1.5 px-4 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-amber-300 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition cursor-pointer active:scale-[0.99]">
                       <span class="material-icons text-sm text-amber-400">auto_fix_high</span>
@@ -1200,33 +1208,48 @@ export class ProductModal implements OnInit {
     return this.jewelleryItemSuggestions.filter(item => item.toLowerCase().includes(q));
   });
 
-  onItemNameFocus() {
-    this.showItemDropdown.set(this.filteredItemSuggestions().length > 0);
-  }
-
   onItemNameInput(event: Event) {
     const input = event.target as HTMLInputElement;
     const val = input?.value ?? '';
     this.itemSearchQuery.set(val);
-    this.showItemDropdown.set(this.filteredItemSuggestions().length > 0);
+    if (!val.trim()) {
+      this.showItemDropdown.set(false);
+    } else {
+      this.showItemDropdown.set(true);
+    }
+  }
+
+  onItemNameFocus() {
+    const val = this.productForm?.get('name')?.value || '';
+    if (val.trim()) {
+      this.itemSearchQuery.set(val);
+      this.showItemDropdown.set(true);
+    } else {
+      this.showItemDropdown.set(false);
+    }
+  }
+
+  onItemNameBlur() {
+    setTimeout(() => {
+      this.showItemDropdown.set(false);
+    }, 200);
+  }
+
+  clearItemName() {
+    this.productForm.patchValue({ name: '' });
+    this.itemSearchQuery.set('');
+    this.showItemDropdown.set(false);
   }
 
   selectItemSuggestion(item: string) {
     this.productForm.patchValue({ name: item });
     this.showItemDropdown.set(false);
-    this.itemSearchQuery.set('');
-  }
-
-  toggleItemDropdown() {
-    this.showItemDropdown.update(v => !v && this.filteredItemSuggestions().length > 0);
+    this.itemSearchQuery.set(item);
   }
 
   onSubmit() {
     if (this.productForm.invalid) return;
 
-    const nameControl = this.productForm.get('name');
-    const name = String(nameControl?.value ?? '').trim();
-    nameControl?.setValue(name);
     const val = this.productForm.value;
     const prod = this.editProduct();
 

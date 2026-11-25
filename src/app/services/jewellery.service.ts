@@ -1,6 +1,6 @@
 import { Injectable, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { AppTheme, Product, Sale, Purchase, Customer, Supplier, Expense, ShopSettings } from '../models/jewellery.model';
+import { AppTheme, Product, Sale, Purchase, Customer, Supplier, Expense, ShopSettings, GirwaRecord, GirwaInterestPayment } from '../models/jewellery.model';
 
 interface LiveRatesResponse {
   goldRate24k: number;
@@ -17,6 +17,12 @@ interface LiveRatesResponse {
 })
 export class JewelleryService {
   private readonly platformId = inject(PLATFORM_ID);
+  
+  // Global Quick Action Modal Signals accessible from any tab
+  readonly isQuickSaleModalOpen = signal<boolean>(false);
+  readonly isQuickPurchaseModalOpen = signal<boolean>(false);
+  readonly isQuickExpenseModalOpen = signal<boolean>(false);
+
   // Signals for state
   private productsSignal = signal<Product[]>([
     {
@@ -468,21 +474,174 @@ export class JewelleryService {
     }
   ]);
 
+  private girwaSignal = signal<GirwaRecord[]>([
+    {
+      id: 'grv-1',
+      girwaNo: 'GRV-2026-001',
+      customerName: 'Rameshwar Lal Soni',
+      customerPhone: '+91 98290 11223',
+      customerAddress: 'Station Road, Sarafa Bazaar, Jaipur',
+      customerAadhaar: 'XXXX-XXXX-4589',
+      items: [
+        {
+          itemName: 'Gold Kanthi Haar (Necklace)',
+          metalType: '22K Gold',
+          purity: '916 Hallmark (22K)',
+          grossWeight: 26.5,
+          netWeight: 25.0,
+          itemDescription: 'Traditional 22K handmade Gold Kanthi necklace with floral pendant',
+          valuationAmount: 173750
+        }
+      ],
+      totalGrossWeight: 26.5,
+      totalNetWeight: 25.0,
+      totalValuation: 173750,
+      loanAmount: 120000,
+      interestRateMonthly: 1.5,
+      startDate: JewelleryService.dateDaysAgo(60, '10:00').split(' ')[0],
+      dueDate: JewelleryService.dateDaysAgo(-120, '10:00').split(' ')[0],
+      status: 'Active',
+      storageLockerNo: 'Vault-B, Box #14',
+      interestPayments: [
+        {
+          id: 'pay-1',
+          date: JewelleryService.dateDaysAgo(30, '12:00').split(' ')[0],
+          amount: 1800,
+          monthsCovered: 1,
+          paymentMode: 'Cash',
+          receiptNo: 'REC-GRV-001',
+          notes: 'Month 1 interest received in cash'
+        }
+      ],
+      notes: 'Customer known for 10 years. Ornament safely sealed in Velvet Pouch #14.'
+    },
+    {
+      id: 'grv-2',
+      girwaNo: 'GRV-2026-002',
+      customerName: 'Shanti Devi Sharma',
+      customerPhone: '+91 94140 88776',
+      customerAddress: 'Mahaveer Nagar, Kota',
+      customerAadhaar: 'XXXX-XXXX-8921',
+      items: [
+        {
+          itemName: 'Gents Gold Kada (Heavy)',
+          metalType: '22K Gold',
+          purity: '916 Hallmark',
+          grossWeight: 42.0,
+          netWeight: 42.0,
+          itemDescription: 'Solid 22K Gold Punjabi Kada, hallmark stamped inside',
+          valuationAmount: 291900
+        }
+      ],
+      totalGrossWeight: 42.0,
+      totalNetWeight: 42.0,
+      totalValuation: 291900,
+      loanAmount: 200000,
+      interestRateMonthly: 1.75,
+      startDate: JewelleryService.dateDaysAgo(90, '11:30').split(' ')[0],
+      dueDate: JewelleryService.dateDaysAgo(-90, '11:30').split(' ')[0],
+      status: 'Active',
+      storageLockerNo: 'Vault-A, Box #03',
+      interestPayments: [],
+      notes: 'Safe keeping in Main Locker #03. Customer promised interest before Diwali.'
+    },
+    {
+      id: 'grv-3',
+      girwaNo: 'GRV-2026-003',
+      customerName: 'Vikas Kumar Meena',
+      customerPhone: '+91 97850 44332',
+      customerAddress: 'Subhash Chowk, Dausa',
+      customerAadhaar: 'XXXX-XXXX-3341',
+      items: [
+        {
+          itemName: 'Silver Pajeb & Kadi (Pair)',
+          metalType: '925 Silver',
+          purity: 'Silver 925',
+          grossWeight: 350.0,
+          netWeight: 340.0,
+          itemDescription: 'Heavy Rajwadi Silver Pajeb & Solid Leg Kadi',
+          valuationAmount: 31110
+        }
+      ],
+      totalGrossWeight: 350.0,
+      totalNetWeight: 340.0,
+      totalValuation: 31110,
+      loanAmount: 22000,
+      interestRateMonthly: 2.0,
+      startDate: JewelleryService.dateDaysAgo(45, '15:00').split(' ')[0],
+      dueDate: JewelleryService.dateDaysAgo(-45, '15:00').split(' ')[0],
+      status: 'Active',
+      storageLockerNo: 'Silver Vault, Box #08',
+      interestPayments: [],
+      notes: 'Silver ornament cleaned and sealed.'
+    },
+    {
+      id: 'grv-4',
+      girwaNo: 'GRV-2026-004',
+      customerName: 'Sunita Agrawal',
+      customerPhone: '+91 98280 66554',
+      customerAddress: 'Adarsh Nagar, Jaipur',
+      customerAadhaar: 'XXXX-XXXX-6712',
+      items: [
+        {
+          itemName: 'Gold Chain & Pendant',
+          metalType: '22K Gold',
+          purity: '916 Hallmark',
+          grossWeight: 18.0,
+          netWeight: 17.5,
+          itemDescription: '22K rope chain with Ganesh pendant',
+          valuationAmount: 121625
+        }
+      ],
+      totalGrossWeight: 18.0,
+      totalNetWeight: 17.5,
+      totalValuation: 121625,
+      loanAmount: 80000,
+      interestRateMonthly: 1.5,
+      startDate: JewelleryService.dateDaysAgo(120, '14:00').split(' ')[0],
+      dueDate: JewelleryService.dateDaysAgo(30, '14:00').split(' ')[0],
+      closedDate: JewelleryService.dateDaysAgo(5, '16:00').split(' ')[0],
+      status: 'Released',
+      storageLockerNo: 'Vault-B, Box #21',
+      interestPayments: [
+        {
+          id: 'pay-2',
+          date: JewelleryService.dateDaysAgo(60, '12:00').split(' ')[0],
+          amount: 2400,
+          monthsCovered: 2,
+          paymentMode: 'UPI',
+          receiptNo: 'REC-GRV-002',
+          notes: 'Months 1-2 interest received'
+        },
+        {
+          id: 'pay-3',
+          date: JewelleryService.dateDaysAgo(5, '16:00').split(' ')[0],
+          amount: 2400,
+          monthsCovered: 2,
+          paymentMode: 'Cash',
+          receiptNo: 'REC-GRV-003',
+          notes: 'Full settlement with principal ₹80,000 + remaining interest ₹2400'
+        }
+      ],
+      notes: 'Account closed. Jewellery safely returned to customer in good condition.'
+    }
+  ]);
+
   private settingsSignal = signal<ShopSettings>({
-    shopName: 'SwarnaMudra Fine Jewellers',
-    tagline: 'Timeless Elegance & Certified Purity',
-    ownerName: 'Manoj Kumar Jeweller',
-    phone: '+91 94440 12345',
-    email: 'contact@swarnamudrajewels.com',
-    address: 'Grand Emporium, 1st Floor, Besant Road, T. Nagar, Chennai - 600017',
-    gstin: '33AABCS1429B1Z8',
+    shopName: 'Purnima Jewellers',
+    tagline: 'Certified Gold & Silver Jewellery',
+    ownerName: 'Purnima Jeweller',
+    phone: '9735959452, 7000453165',
+    email: 'contact@purnimajewellers.com',
+    address: 'Sarafa Bazar, Agar Malwa, Madhya Pradesh',
+    gstin: '23BDNPS6412B1ZR',
     currency: '₹',
     goldRate24k: 7580,
     goldRate22k: 6950,
     silverRate: 91.50,
     gstPercentage: 3,
     defaultLowStockThreshold: 3,
-    theme: 'light'
+    theme: 'blue-white'
   });
 
   private toastSignal = signal<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
@@ -497,12 +656,44 @@ export class JewelleryService {
   readonly customers = this.customersSignal.asReadonly();
   readonly suppliers = this.suppliersSignal.asReadonly();
   readonly expenses = this.expensesSignal.asReadonly();
+  readonly girwa = this.girwaSignal.asReadonly();
   readonly settings = this.settingsSignal.asReadonly();
   readonly toast = this.toastSignal.asReadonly();
   readonly isLoadingRates = this.isLoadingRatesSignal.asReadonly();
   readonly ratesLiveSource = this.ratesLiveSourceSignal.asReadonly();
   readonly ratesUpdatedAt = this.ratesUpdatedAtSignal.asReadonly();
   readonly currentTheme = computed(() => this.settingsSignal().theme);
+
+  // Girwa / Pawn Ledger Computed Statistics
+  readonly activeGirwa = computed(() =>
+    this.girwaSignal().filter(g => g.status === 'Active')
+  );
+
+  readonly totalActiveGirwaCount = computed(() =>
+    this.activeGirwa().length
+  );
+
+  readonly totalActiveGirwaLoan = computed(() =>
+    this.activeGirwa().reduce((sum, g) => sum + g.loanAmount, 0)
+  );
+
+  readonly totalActiveGirwaGoldWeight = computed(() =>
+    this.activeGirwa().reduce((sum, g) => {
+      const goldItems = g.items.filter(item => item.metalType.includes('Gold'));
+      return sum + goldItems.reduce((iSum, item) => iSum + item.netWeight, 0);
+    }, 0)
+  );
+
+  readonly totalActiveGirwaSilverWeight = computed(() =>
+    this.activeGirwa().reduce((sum, g) => {
+      const silverItems = g.items.filter(item => item.metalType.includes('Silver'));
+      return sum + silverItems.reduce((iSum, item) => iSum + item.netWeight, 0);
+    }, 0)
+  );
+
+  readonly totalGirwaMonthlyInterest = computed(() =>
+    this.activeGirwa().reduce((sum, g) => sum + Math.round((g.loanAmount * g.interestRateMonthly) / 100), 0)
+  );
 
   // Global & Synchronized Section Search Queries
   readonly globalSearchQuery = signal<string>('');
@@ -851,5 +1042,90 @@ export class JewelleryService {
     const activeTheme = newSettings.theme || this.settingsSignal().theme;
     this.settingsSignal.set({ ...newSettings, theme: activeTheme });
     this.showToast('Shop settings updated successfully!');
+  }
+
+  // Girwa / Pawn CRUD & Calculations
+  calculateGirwaFinancials(record: GirwaRecord) {
+    const start = new Date(record.startDate);
+    const end = record.closedDate ? new Date(record.closedDate) : new Date();
+    
+    const diffTime = Math.max(0, end.getTime() - start.getTime());
+    const elapsedDays = Math.max(1, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
+    
+    const elapsedMonths = Math.max(1, +(elapsedDays / 30).toFixed(1));
+    const monthlyInterestAmount = Math.round((record.loanAmount * record.interestRateMonthly) / 100);
+    const totalInterestAccrued = Math.round(monthlyInterestAmount * elapsedMonths);
+    
+    const totalInterestPaid = record.interestPayments.reduce((sum, p) => sum + p.amount, 0);
+    const pendingInterest = Math.max(0, totalInterestAccrued - totalInterestPaid);
+    const totalPayableToRelease = record.status === 'Released' ? 0 : Math.round(record.loanAmount + pendingInterest);
+
+    return {
+      elapsedDays,
+      elapsedMonths,
+      monthlyInterestAmount,
+      totalInterestAccrued,
+      totalInterestPaid,
+      pendingInterest,
+      totalPayableToRelease
+    };
+  }
+
+  addGirwa(recordData: Omit<GirwaRecord, 'id' | 'girwaNo' | 'interestPayments'>): GirwaRecord {
+    const girwaNo = `GRV-2026-${String(this.girwaSignal().length + 1).padStart(3, '0')}`;
+    const newRecord: GirwaRecord = {
+      ...recordData,
+      id: 'grv_' + Date.now(),
+      girwaNo,
+      interestPayments: []
+    };
+    this.girwaSignal.update(list => [newRecord, ...list]);
+    this.showToast(`Girwa record created! Parcha #${girwaNo}`);
+    return newRecord;
+  }
+
+  updateGirwa(id: string, updated: Partial<GirwaRecord>) {
+    this.girwaSignal.update(list => list.map(g => g.id === id ? { ...g, ...updated } : g));
+    this.showToast('Girwa record updated.');
+  }
+
+  releaseGirwa(id: string, settlementNotes?: string) {
+    const today = new Date().toISOString().split('T')[0];
+    this.girwaSignal.update(list => list.map(g => {
+      if (g.id === id) {
+        return {
+          ...g,
+          status: 'Released',
+          closedDate: today,
+          notes: settlementNotes ? `${g.notes ? g.notes + ' • ' : ''}${settlementNotes}` : g.notes
+        };
+      }
+      return g;
+    }));
+    this.showToast('Girwa settled & released! Jewellery returned to customer.');
+  }
+
+  addGirwaInterestPayment(id: string, payment: Omit<GirwaInterestPayment, 'id' | 'receiptNo'>) {
+    const receiptNo = `REC-GRV-${String(Date.now()).slice(-4)}`;
+    const newPay: GirwaInterestPayment = {
+      ...payment,
+      id: 'pay_' + Date.now(),
+      receiptNo
+    };
+    this.girwaSignal.update(list => list.map(g => {
+      if (g.id === id) {
+        return {
+          ...g,
+          interestPayments: [...g.interestPayments, newPay]
+        };
+      }
+      return g;
+    }));
+    this.showToast(`Interest payment recorded! Receipt #${receiptNo}`);
+  }
+
+  deleteGirwa(id: string) {
+    this.girwaSignal.update(list => list.filter(g => g.id !== id));
+    this.showToast('Girwa record deleted.', 'info');
   }
 }

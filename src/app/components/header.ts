@@ -76,18 +76,18 @@ type SearchScope = 'all' | 'inventory' | 'customers' | 'sales';
 
         <!-- Global Search Bar (Tablet & Desktop inline) -->
         <div class="hidden md:flex flex-1 max-w-md lg:max-w-lg mx-3 relative">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-amber-400/90">
-            <span class="material-icons" [style.fontSize.px]="17">search</span>
-          </span>
-          <input
-            type="search"
-            aria-label="Global search across inventory, customers and sales"
-            [value]="service.globalSearchQuery()"
-            (input)="onGlobalSearchInput($event)"
-            (focus)="openResultsIfQuery()"
-            (keydown.escape)="closeResults()"
-            placeholder="Search inventory, customers, sales invoices..."
-            class="w-full pl-9 pr-16 py-1.5 rounded-xl bg-neutral-800 border border-neutral-700 text-xs text-white placeholder-neutral-400 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition" />
+          <div class="flex flex-1 min-w-0 items-center gap-2 rounded-xl border border-neutral-700 px-3 focus-within:border-amber-400 focus-within:ring-2 focus-within:ring-amber-400/20 transition">
+            <span class="material-icons text-amber-400/90 shrink-0 pointer-events-none" [style.fontSize.px]="17">search</span>
+            <input
+              type="search"
+              aria-label="Global search across inventory, customers and sales"
+              [value]="service.globalSearchQuery()"
+              (input)="onGlobalSearchInput($event)"
+              (focus)="openResultsIfQuery()"
+              (keydown.escape)="closeResults()"
+              placeholder="Search inventory, customers, sales invoices..."
+              class="flex-1 min-w-0 pr-16 py-1.5 bg-transparent border-0 text-xs text-white placeholder-neutral-400 outline-none focus:ring-0" />
+          </div>
           @if (service.globalSearchQuery()) {
             <div class="absolute inset-y-0 right-1.5 flex items-center space-x-1">
               <span class="px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 text-[10px] font-bold tabular-nums">
@@ -122,19 +122,6 @@ type SearchScope = 'all' | 'inventory' | 'customers' | 'sales';
             <div class="text-[11px] font-semibold text-white">{{ settings().ownerName }}</div>
             <div class="text-[10px] text-amber-400">{{ settings().phone }}</div>
           </div>
-
-          <!-- Storefront & Tutorial Quick Trigger Button -->
-          <button
-            type="button"
-            (click)="sectionChange.emit('landing')"
-            [class]="activeSection() === 'landing' ? 'bg-amber-500 text-neutral-950 border-amber-400 font-extrabold shadow-sm' : 'bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border-amber-500/35 font-bold'"
-            class="px-2.5 py-1 sm:py-1.5 rounded-xl border flex items-center space-x-1 sm:space-x-1.5 transition active:scale-95 shadow-xs cursor-pointer text-xs"
-            title="Showroom Landing Page & Hindi Video Tutorial">
-            <span class="material-icons text-sm sm:text-base text-amber-400">play_circle</span>
-            <span class="hidden sm:inline">Storefront & Tutorial</span>
-            <span class="sm:hidden text-[11px]">Tutorial</span>
-          </button>
-
           <app-pwa-install></app-pwa-install>
           <button
             type="button"
@@ -149,10 +136,8 @@ type SearchScope = 'all' | 'inventory' | 'customers' | 'sales';
       <!-- Mobile Expandable Global Search Strip (< md) -->
       @if (isMobileSearchOpen() || service.globalSearchQuery()) {
         <div class="md:hidden px-3 pb-2 pt-0.5 border-t border-white/10">
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-amber-400">
-              <span class="material-icons" [style.fontSize.px]="16">search</span>
-            </span>
+          <div class="relative flex items-center gap-2 rounded-xl border border-neutral-700 px-3 focus-within:border-amber-400 transition">
+            <span class="material-icons text-amber-400 shrink-0 pointer-events-none" [style.fontSize.px]="16">search</span>
             <input
               type="search"
               aria-label="Search inventory, customers and sales"
@@ -161,7 +146,7 @@ type SearchScope = 'all' | 'inventory' | 'customers' | 'sales';
               (focus)="openResultsIfQuery()"
               (keydown.escape)="closeResults()"
               placeholder="Search items, customers, invoices..."
-              class="w-full pl-9 pr-16 py-1.5 rounded-xl bg-neutral-800 border border-neutral-700 text-xs text-white placeholder-neutral-400 focus:border-amber-400 outline-none transition" />
+              class="flex-1 min-w-0 pr-16 py-1.5 bg-transparent border-0 text-xs text-white placeholder-neutral-400 outline-none focus:ring-0" />
             @if (service.globalSearchQuery()) {
               <div class="absolute inset-y-0 right-1.5 flex items-center space-x-1">
                 <span class="px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 text-[10px] font-bold tabular-nums">
@@ -438,18 +423,19 @@ export class Header {
 
   readonly isMobileSearchOpen = signal<boolean>(false);
   readonly isResultsOpen = signal<boolean>(false);
+  readonly isQuickActionsOpen = signal<boolean>(false);
   readonly searchScope = signal<SearchScope>('all');
 
   readonly desktopTabs: DesktopTabItem[] = [
     { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
-    { id: 'landing', label: 'Showroom & Tutorial', icon: 'storefront' },
     { id: 'inventory', label: 'Inventory', icon: 'inventory_2' },
-    { id: 'catalog', label: 'Catalog', icon: 'menu_book' },
+    // { id: 'catalog', label: 'Catalog', icon: 'menu_book' },
     { id: 'sales', label: 'Sales', icon: 'point_of_sale' },
     { id: 'customers', label: 'Customers', icon: 'people' },
+    { id: 'girwa', label: 'Girwa (गिरवी)', icon: 'account_balance_wallet' },
     { id: 'purchases', label: 'Purchases', icon: 'local_mall' },
-    { id: 'suppliers', label: 'Suppliers', icon: 'business' },
-    { id: 'expenses', label: 'Expenses', icon: 'receipt' },
+    // { id: 'suppliers', label: 'Suppliers', icon: 'business' },
+    // { id: 'expenses', label: 'Expenses', icon: 'receipt' },
     { id: 'reports', label: 'Reports', icon: 'assessment' },
     { id: 'settings', label: 'Settings', icon: 'settings' }
   ];
@@ -561,5 +547,29 @@ export class Header {
     this.service.salesSearchQuery.set(sale.invoiceNo);
     this.isResultsOpen.set(false);
     this.sectionChange.emit('sales');
+  }
+
+  toggleQuickActions() {
+    this.isQuickActionsOpen.update(v => !v);
+  }
+
+  triggerQuickSale() {
+    this.isQuickActionsOpen.set(false);
+    this.service.isQuickSaleModalOpen.set(true);
+  }
+
+  triggerQuickPurchase() {
+    this.isQuickActionsOpen.set(false);
+    this.service.isQuickPurchaseModalOpen.set(true);
+  }
+
+  triggerQuickExpense() {
+    this.isQuickActionsOpen.set(false);
+    this.service.isQuickExpenseModalOpen.set(true);
+  }
+
+  jumpTo(section: string) {
+    this.isQuickActionsOpen.set(false);
+    this.sectionChange.emit(section);
   }
 }

@@ -13,22 +13,7 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <!-- Showroom Landing Page & Hindi Tutorial -->
-        <button (click)="selectSubView.emit('landing')" type="button" class="bg-gradient-to-r from-neutral-900 via-neutral-950 to-neutral-900 text-white p-5 rounded-2xl border-2 border-amber-500/50 hover:border-amber-400 transition flex items-center justify-between text-left group cursor-pointer sm:col-span-2 shadow-lg shadow-amber-500/10">
-          <div class="flex items-center space-x-4">
-            <div class="w-12 h-12 rounded-2xl bg-amber-500 text-neutral-950 flex items-center justify-center group-hover:scale-110 transition shadow-md shadow-amber-500/30">
-              <span class="material-icons text-2xl">storefront</span>
-            </div>
-            <div>
-              <div class="flex items-center space-x-2">
-                <h4 class="font-bold text-white text-base">Showroom & Hindi Video Tutorial</h4>
-                <span class="px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">Hindi Voice</span>
-              </div>
-              <p class="text-xs text-amber-300/90">Store details, live bullion board & 7-module Hindi video walkthrough</p>
-            </div>
-          </div>
-          <span class="material-icons text-amber-400 group-hover:translate-x-1 transition text-2xl">play_circle</span>
-        </button>
+
 
         <!-- Digital Product Catalog -->
         <button (click)="selectSubView.emit('catalog')" type="button" class="bg-neutral-900 text-white p-5 rounded-2xl border border-amber-500/35 hover:border-amber-400 transition flex items-center justify-between text-left group cursor-pointer sm:col-span-2 shadow-sm">
@@ -42,6 +27,23 @@ import { CommonModule } from '@angular/common';
             </div>
           </div>
           <span class="material-icons text-amber-400 group-hover:translate-x-1 transition">chevron_right</span>
+        </button>
+
+        <!-- Girwa (गिरवी बही-खाता) / Gold & Silver Pawn Ledger -->
+        <button (click)="selectSubView.emit('girwa')" type="button" class="bg-amber-500/10 hover:bg-amber-500/15 text-neutral-950 p-5 rounded-2xl border-2 border-amber-500/40 hover:border-amber-500 transition flex items-center justify-between text-left group cursor-pointer sm:col-span-2 shadow-sm">
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500 text-neutral-950 flex items-center justify-center group-hover:scale-110 transition shadow-md shadow-amber-500/25">
+              <span class="material-icons text-2xl">account_balance_wallet</span>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h4 class="font-bold text-neutral-900 text-base">Girwa Ledger (गिरवी बही-खाता)</h4>
+                <span class="px-1.5 py-0.5 rounded-full bg-amber-600 text-white text-[10px] font-bold">New Module</span>
+              </div>
+              <p class="text-xs text-neutral-600">Customer pawn pledge, gold/silver collateral, monthly interest & Girvi Parcha slips</p>
+            </div>
+          </div>
+          <span class="material-icons text-amber-600 group-hover:translate-x-1 transition text-2xl">chevron_right</span>
         </button>
 
         <!-- Purchases -->

@@ -13,40 +13,26 @@ import { Sale } from '../models/jewellery.model';
   imports: [CommonModule, SaleModal, InvoiceModal, SalesTrendChart],
   template: `
     <div class="space-y-3 lg:space-y-2.5 pb-24 lg:pb-6 relative min-h-[75vh]">
-      <!-- Desktop-Only Unified Search, Filter & Primary CTA Toolbar (>= 1024px) -->
+
+
+                <!-- Desktop-Only Unified Search, Filter & Primary CTA Toolbar (>= 1024px) -->
       <div class="hidden lg:flex items-center justify-between gap-3 bg-white px-4 py-3 rounded-2xl border border-neutral-200 shadow-xs">
         <div class="flex items-center space-x-3 flex-1 min-w-0">
-          <div class="relative w-72 xl:w-80 shrink-0">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-neutral-400">
-              <span class="material-icons" [style.fontSize.px]="16">search</span>
-            </span>
+          <div class="flex w-72 xl:w-80 shrink-0 items-center gap-2 rounded-xl bg-neutral-50 border border-neutral-200 px-3 focus-within:border-amber-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-amber-500/20 transition">
+            <span class="material-icons text-neutral-400 shrink-0 pointer-events-none" [style.fontSize.px]="16">search</span>
             <input
               type="text"
               [value]="searchQuery()"
               (input)="onSearchInput($event)"
               placeholder="Search invoice #, customer, item..."
-              class="w-full pl-9 pr-8 py-1.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs focus:border-amber-500 focus:bg-white focus:ring-2 focus:ring-amber-500/20 outline-none transition" />
+              class="flex-1 min-w-0 py-1.5 bg-transparent border-0 text-xs outline-none focus:ring-0" />
             @if (searchQuery()) {
               <button
                 type="button"
                 (click)="searchQuery.set('')"
-                class="absolute inset-y-0 right-0 flex items-center pr-2.5 text-neutral-400 hover:text-neutral-700 cursor-pointer"
+                class="text-neutral-400 hover:text-neutral-700 cursor-pointer shrink-0"
                 title="Clear Search">
-                <span class="material-icons" [style.fontSize.px]="15">close</span>
-              </button>
-            }
-          </div>
-
-          <div class="flex items-center space-x-1 overflow-x-auto scrollbar-none">
-            @for (mode of paymentModes; track mode) {
-              <button
-                type="button"
-                (click)="selectedPaymentMode.set(mode)"
-                [class]="selectedPaymentMode() === mode
-                  ? 'bg-neutral-900 text-amber-300 border-neutral-900 font-bold'
-                  : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border-neutral-200 font-semibold'"
-                class="px-2.5 py-1 rounded-full border text-[11px] whitespace-nowrap transition cursor-pointer">
-                {{ mode }}
+                <span class="material-icons leading-none" [style.fontSize.px]="15">close</span>
               </button>
             }
           </div>
@@ -59,90 +45,19 @@ import { Sale } from '../models/jewellery.model';
           <button
             type="button"
             (click)="isSaleModalOpen.set(true)"
-            class="bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-3.5 py-2 rounded-xl text-xs flex items-center space-x-1.5 shadow-xs transition cursor-pointer shrink-0">
-            <span class="material-icons text-base">point_of_sale</span>
-            <span>New Sale</span>
+            class="bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-2.5 py-1.5 rounded-lg text-[11px] flex items-center space-x-1 shadow-xs transition cursor-pointer shrink-0">
+            <span class="material-icons text-sm">add</span>
+            <span>Add New Sale</span>
           </button>
         </div>
       </div>
-
-      <!-- Summary KPIs + 7-Day Revenue Chart Row -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-3 items-stretch">
-        <!-- Mobile Search+KPI Card / Desktop 2x2 KPI Summary Grid -->
-        <div class="lg:col-span-4 bg-white p-3 lg:p-3.5 rounded-3xl lg:rounded-2xl shadow-xs border border-neutral-200 flex flex-col justify-between space-y-2.5 lg:space-y-0">
-          <!-- Mobile-Only Search Bar -->
-          <div class="relative lg:hidden">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-neutral-400">
-              <span class="material-icons" [style.fontSize.px]="16">search</span>
-            </span>
-            <input
-              type="text"
-              [value]="searchQuery()"
-              (input)="onSearchInput($event)"
-              placeholder="Search invoice #, customer or phone..."
-              class="w-full pl-9 pr-8 py-2 rounded-xl bg-neutral-50 border border-neutral-200 text-xs focus:border-amber-500 focus:bg-white focus:ring-2 focus:ring-amber-500/20 outline-none transition" />
-            @if (searchQuery()) {
-              <button
-                type="button"
-                (click)="searchQuery.set('')"
-                class="absolute inset-y-0 right-0 flex items-center pr-2.5 text-neutral-400 hover:text-neutral-700 cursor-pointer"
-                title="Clear Search">
-                <span class="material-icons" [style.fontSize.px]="16">close</span>
-              </button>
-            }
-          </div>
-
-          <!-- Desktop Header Label inside KPI Card -->
-          <div class="hidden lg:flex items-center justify-between pb-2">
-            <span class="text-xs font-bold text-neutral-900 flex items-center space-x-1.5">
-              <span class="material-icons text-amber-600" [style.fontSize.px]="16">analytics</span>
-              <span>Billing Overview</span>
-            </span>
-            <span class="text-[10px] font-semibold text-neutral-500">Filtered Summary</span>
-          </div>
-
-          <div class="grid grid-cols-3 lg:grid-cols-2 gap-2 lg:gap-2.5 pt-0.5 lg:flex-1">
-            <div class="bg-neutral-50 rounded-2xl lg:rounded-xl px-2.5 py-1.5 lg:p-3 border border-neutral-100 flex flex-col justify-center">
-              <span class="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block">Invoices</span>
-              <span class="text-xs lg:text-lg font-extrabold text-neutral-900 tabular-nums mt-0.5">{{ filteredSales().length }}</span>
-            </div>
-            <div class="bg-amber-50/70 rounded-2xl lg:rounded-xl px-2.5 py-1.5 lg:p-3 border border-amber-200/60 flex flex-col justify-center">
-              <span class="text-[9px] font-bold uppercase tracking-wider text-amber-700 block">Total Sales</span>
-              <span class="text-xs lg:text-lg font-extrabold text-neutral-950 tabular-nums mt-0.5">₹{{ totalRevenue() | number:'1.0-0' }}</span>
-            </div>
-            <div class="bg-emerald-50/70 rounded-2xl lg:rounded-xl px-2.5 py-1.5 lg:p-3 border border-emerald-200/60 flex flex-col justify-center">
-              <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-700 block">GST Total</span>
-              <span class="text-xs lg:text-lg font-extrabold text-emerald-900 tabular-nums mt-0.5">₹{{ totalGst() | number:'1.0-0' }}</span>
-            </div>
-            <div class="hidden lg:flex bg-neutral-50 rounded-xl p-3 border border-neutral-100 flex-col justify-center">
-              <span class="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block">Discounts</span>
-              <span class="text-lg font-extrabold text-neutral-900 tabular-nums mt-0.5">₹{{ totalDiscounts() | number:'1.0-0' }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 7-Day Daily Sales Revenue D3 Chart -->
-        <div class="lg:col-span-8">
-          @defer (on idle) {
-            <app-sales-trend-chart></app-sales-trend-chart>
-          } @placeholder {
-            <div class="h-56 rounded-2xl bg-white border border-neutral-200 p-3.5 animate-pulse"></div>
-          } @error {
-            <div class="h-56 rounded-2xl bg-white border border-neutral-200 p-4 flex flex-col items-center justify-center text-center text-xs text-neutral-500">
-              <span class="material-icons text-2xl text-neutral-300 mb-1">show_chart</span>
-              <span>Sales revenue chart could not be loaded right now.</span>
-            </div>
-          }
-        </div>
-      </div>
-
       <!-- Sales Invoices: Compact Table on Desktop (>= lg), Native List on Mobile/Tablet (< lg) -->
       @if (filteredSales().length === 0) {
         <div class="bg-white rounded-3xl lg:rounded-2xl p-10 text-center border border-neutral-200 shadow-xs">
           <span class="material-icons text-4xl text-neutral-300 mb-2">receipt_long</span>
           <h4 class="font-bold text-neutral-800 text-sm">No sales invoices found</h4>
           <p class="text-xs text-neutral-500 mt-1">
-            {{ searchQuery() || selectedPaymentMode() !== 'All' ? 'Try clearing or changing your search/payment filter.' : 'Tap New Sale to create your first bill.' }}
+            {{ searchQuery() || selectedPaymentMode() !== 'All' ? 'Try clearing or changing your search/payment filter.' : 'Tap Add New Sale to create your first bill.' }}
           </p>
         </div>
       } @else {
@@ -270,9 +185,9 @@ import { Sale } from '../models/jewellery.model';
         <button
           type="button"
           (click)="isSaleModalOpen.set(true)"
-          class="bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-4 py-3 rounded-2xl shadow-xl shadow-amber-500/30 flex items-center space-x-2 transition hover:scale-105 active:scale-95 cursor-pointer border border-amber-400/50">
-          <span class="material-icons text-xl">point_of_sale</span>
-          <span class="text-xs font-bold tracking-wide">New Sale</span>
+          class="bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold px-3 py-2 rounded-xl shadow-xl shadow-amber-500/30 flex items-center space-x-1.5 transition hover:scale-105 active:scale-95 cursor-pointer border border-amber-400/50">
+          <span class="material-icons text-sm">add</span>
+          <span class="text-[11px] font-bold tracking-wide">Add New Sale</span>
         </button>
       </div>
 
